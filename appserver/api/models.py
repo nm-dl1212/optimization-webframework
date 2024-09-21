@@ -1,6 +1,6 @@
 from django.db import models
 
-# Create your models here.
+
 class Task(models.Model):
     title = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -8,4 +8,51 @@ class Task(models.Model):
 
     def __str__(self):
         return self.title
-    
+
+
+class OptimizationCase(models.Model):
+    case_id = models.AutoField(primary_key=True)
+    user_id = models.CharField(max_length=255)
+    max_attempt_number = models.IntegerField(default=10)
+    evaluation_program = models.CharField(max_length=255)
+    remarks = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Optimization Case'
+        verbose_name_plural = 'Optimization Cases'
+
+
+class OptimizationResult(models.Model):
+    result_id = models.AutoField(primary_key=True)
+    case = models.ForeignKey(OptimizationCase, on_delete=models.CASCADE)
+    attempt_number = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Optimization Result'
+        verbose_name_plural = 'Optimization Results'
+
+
+class ObjectiveValue(models.Model):
+    id = models.AutoField(primary_key=True)
+    result = models.ForeignKey(OptimizationResult, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    value = models.FloatField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Objective Value'
+        verbose_name_plural = 'Objective Values'
+
+
+class DesignValue(models.Model):
+    id = models.AutoField(primary_key=True)
+    result = models.ForeignKey(OptimizationResult, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    value = models.FloatField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Design Value'
+        verbose_name_plural = 'Design Values'
