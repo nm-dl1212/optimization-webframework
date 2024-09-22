@@ -33,6 +33,7 @@ class OptimizationCaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = OptimizationCase
         fields = '__all__'
+        read_only_fields = ['user_id', 'created_at']
 
 
 class OptimizationResultSerializer(serializers.ModelSerializer):

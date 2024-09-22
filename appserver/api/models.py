@@ -14,7 +14,11 @@ class OptimizationCase(models.Model):
     case_id = models.AutoField(primary_key=True)
     user_id = models.CharField(max_length=255)
     max_attempt_number = models.IntegerField(default=10)
-    evaluation_program = models.CharField(max_length=255)
+    initial_sampling_method = models.CharField(
+        max_length=50, choices=(("latin", "latin"), ("random", "random")), default="latin"
+    )
+    objective_function = models.CharField(max_length=50)
+
     remarks = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 

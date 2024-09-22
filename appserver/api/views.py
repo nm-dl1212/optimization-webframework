@@ -39,34 +39,33 @@ class TaskViewSet(viewsets.ModelViewSet):
 class OptimizationCaseViewSet(viewsets.ModelViewSet):
     queryset = OptimizationCase.objects.all()
     serializer_class = OptimizationCaseSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
     def perform_create(self, serializer):
         # OptimizationCaseを保存
-        optimization_case = serializer.save()
-
-        max_attempt_number = optimization_case.max_attempt_number
+        optimization_case = serializer.save(user_id=self.request.user.id)
 
         # 仮の設計変数
         submit_desigh_vals = [-4, -3, -2, -1, 0, 1, 2, 3, 4, 5]
 
-        # 既定の回数 (ここでは10回) のOptimizationResultを作成
+        # 繰り返しoptimization-resultを作成
+        max_attempt_number = optimization_case.max_attempt_number
         for i in range(max_attempt_number):
 
-            x = submit_desigh_vals[i]
-            y = x**2
-
-            # objectを作成
             optimization_result = OptimizationResult.objects.create(
                 case=optimization_case,  # case
                 attempt_number=i
             )
 
+            x = submit_desigh_vals[i]
             design_value = DesignValue.objects.create(
                 result=optimization_result,
                 name='x1',
                 value=x,
             )
 
+            y = x**2
             objective_value = ObjectiveValue.objects.create(
                 result=optimization_result,
                 name='y1',
@@ -77,13 +76,19 @@ class OptimizationCaseViewSet(viewsets.ModelViewSet):
 class OptimizationResultViewSet(viewsets.ModelViewSet):
     queryset = OptimizationResult.objects.all()
     serializer_class = OptimizationResultSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
 
 class ObjectiveValueViewSet(viewsets.ModelViewSet):
     queryset = ObjectiveValue.objects.all()
     serializer_class = ObjectiveValueSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
 
 class DesignValueViewSet(viewsets.ModelViewSet):
     queryset = DesignValue.objects.all()
     serializer_class = DesignValueSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
