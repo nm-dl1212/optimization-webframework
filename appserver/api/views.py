@@ -12,6 +12,8 @@ from .models import Task
 from .serializers import TaskSerializer, UserSerializer
 from .ownpermissions import ProfilePermission
 
+from .svc.services import SamplingService
+
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -46,19 +48,20 @@ class OptimizationCaseViewSet(viewsets.ModelViewSet):
         # OptimizationCaseを保存
         optimization_case = serializer.save(user_id=self.request.user.id)
 
-        # 仮の設計変数
-        submit_desigh_vals = [-4, -3, -2, -1, 0, 1, 2, 3, 4, 5]
+        # サンプリングサービスを使用して設計変数を生成
+        sampling_service = SamplingService(optimization_case)
+        submit_designs = sampling_service.generate_designs()
 
+        # OptimizationResultを作成
         # 繰り返しoptimization-resultを作成
-        max_attempt_number = optimization_case.max_attempt_number
-        for i in range(max_attempt_number):
+        for i in range(optimization_case.max_attempt_number):
 
             optimization_result = OptimizationResult.objects.create(
                 case=optimization_case,  # case
                 attempt_number=i
             )
 
-            x = submit_desigh_vals[i]
+            x = submit_designs[i]
             design_value = DesignValue.objects.create(
                 result=optimization_result,
                 name='x1',
