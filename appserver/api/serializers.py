@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Task
+from .models import Task, OptimizationCase, OptimizationResult, ObjectiveValue, DesignValue
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 
@@ -26,3 +26,29 @@ class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
         fields = ['id', 'title', 'created_at', 'updated_at']
+
+
+# optimization
+class OptimizationCaseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OptimizationCase
+        fields = '__all__'
+        read_only_fields = ['user_id', 'created_at']
+
+
+class OptimizationResultSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OptimizationResult
+        fields = '__all__'
+
+
+class ObjectiveValueSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ObjectiveValue
+        fields = '__all__'
+
+
+class DesignValueSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DesignValue
+        fields = '__all__'
