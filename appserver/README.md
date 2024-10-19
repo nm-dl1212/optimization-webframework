@@ -1,3 +1,9 @@
+# 初期化
+python manage.py makemigrations api
+python manage.py migrate
+python manage.py runserver
+
+
 # 操作
 新規ユーザーを作成
 ```
@@ -24,7 +30,7 @@ curl -X POST http://127.0.0.1:8000/auth/ \
 ```
 curl -X POST http://127.0.0.1:8000/api/optim/ \
 -H "Content-Type: application/json" \
--H "Authorization: Token 4fe2af6ab996a6bc062028e25369992519d7a7db" \
+-H "Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
 -d '{
     "remarks": "First optimization",
     "max_attempt_number": 3,
@@ -32,3 +38,6 @@ curl -X POST http://127.0.0.1:8000/api/optim/ \
     "objective_function": "Program_A"
 }'
 ```
+
+# 管理
+python manage.py createsuperuser
