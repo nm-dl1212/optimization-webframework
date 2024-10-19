@@ -13,6 +13,7 @@ from .serializers import TaskSerializer, UserSerializer
 from .ownpermissions import ProfilePermission
 
 from .svc.services import SamplingService
+from .svc.api_call import call_model_api
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -62,13 +63,21 @@ class OptimizationCaseViewSet(viewsets.ModelViewSet):
             )
 
             x = submit_designs[i]
+            y = call_model_api(x)
+
+            print("test", x, y)
+
             design_value = DesignValue.objects.create(
                 result=optimization_result,
                 name='x1',
-                value=x,
+                value=x[0],
+            )
+            design_value = DesignValue.objects.create(
+                result=optimization_result,
+                name='x2',
+                value=x[1],
             )
 
-            y = x**2
             objective_value = ObjectiveValue.objects.create(
                 result=optimization_result,
                 name='y1',
