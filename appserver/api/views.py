@@ -58,7 +58,7 @@ class OptimizationCaseViewSet(viewsets.ModelViewSet):
         for i in range(optimization_case.max_attempt_number):
 
             optimization_result = OptimizationResult.objects.create(
-                case=optimization_case,  # case
+                case_id=optimization_case,  # case
                 attempt_number=i
             )
 
@@ -93,13 +93,13 @@ class OptimizationResultViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        case_id = self.request.query_params.get('case_id')
+        target_case_id = self.request.query_params.get('case_id')
 
         # userでフィルタリング
-        queryset = OptimizationResult.objects.filter(case__user_id=user.id)
+        queryset = OptimizationResult.objects.filter(case_id__user_id=user.id)
 
-        # case_idが指定されていればフィルタリング
-        if case_id is not None:
-            queryset = queryset.filter(case__case_id=case_id)
+        # target_case_idが指定されていればフィルタリング
+        if target_case_id is not None:
+            queryset = queryset.filter(case_id__id=target_case_id)
 
         return queryset

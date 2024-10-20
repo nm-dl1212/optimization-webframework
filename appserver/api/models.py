@@ -11,7 +11,7 @@ class Task(models.Model):
 
 
 class OptimizationCase(models.Model):
-    case_id = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     user_id = models.CharField(max_length=255)
     max_attempt_number = models.IntegerField(default=10)
     initial_sampling_method = models.CharField(
@@ -28,8 +28,8 @@ class OptimizationCase(models.Model):
 
 
 class OptimizationResult(models.Model):
-    result_id = models.AutoField(primary_key=True)
-    case = models.ForeignKey(OptimizationCase, on_delete=models.CASCADE)
+    id = models.AutoField(primary_key=True)
+    case_id = models.ForeignKey(OptimizationCase, on_delete=models.CASCADE)
     attempt_number = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
 

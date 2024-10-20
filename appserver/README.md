@@ -25,11 +25,16 @@ curl -X POST http://127.0.0.1:8000/auth/ \
 }'
 ```
 
+トークンを環境変数にセット
+```bash
+export TOKEN=xxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
 最適化ケースを新規作成
 ```bash
 curl -X POST http://127.0.0.1:8000/api/cases/ \
 -H "Content-Type: application/json" \
--H "Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+-H "Authorization: Token ${TOKEN}" \
 -d '{
     "remarks": "First optimization",
     "max_attempt_number": 3,
@@ -41,16 +46,16 @@ curl -X POST http://127.0.0.1:8000/api/cases/ \
 
 実行した最適化ケースの確認
 ```bash
-curl -http://127.0.0.1:8000/api/cases/ \
+curl http://127.0.0.1:8000/api/cases/ \
 -H "Content-Type: application/json" \
--H "Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" | jq
+-H "Authorization: Token ${TOKEN}" | jq
 ```
 
 最適化ケースIDを指定して，個別の実行結果を確認
 ```bash
-curl -http://127.0.0.1:8000/api/results/?case_id=1 \
+curl http://127.0.0.1:8000/api/results/?case_id=1 \
 -H "Content-Type: application/json" \
--H "Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" | jq
+-H "Authorization: Token ${TOKEN}" | jq
 ```
 
 
