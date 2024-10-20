@@ -91,16 +91,15 @@ class OptimizationResultViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
 
+    def get_queryset(self):
+        user = self.request.user
+        case_id = self.request.query_params.get('case_id')
 
-class ObjectiveValueViewSet(viewsets.ModelViewSet):
-    queryset = ObjectiveValue.objects.all()
-    serializer_class = ObjectiveValueSerializer
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
+        # userでフィルタリング
+        queryset = OptimizationResult.objects.filter(case__user_id=user.id)
 
+        # case_idが指定されていればフィルタリング
+        if case_id is not None:
+            queryset = queryset.filter(case__case_id=case_id)
 
-class DesignValueViewSet(viewsets.ModelViewSet):
-    queryset = DesignValue.objects.all()
-    serializer_class = DesignValueSerializer
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
+        return queryset
