@@ -1,7 +1,9 @@
-from .serializers import (OptimizationCaseSerializer, OptimizationResultSerializer,
-                          ObjectiveValueSerializer, DesignValueSerializer)
+from .serializers import (OptimizationCaseSerializer,
+                          OptimizationResultSerializer,
+                          DetailOptimizationResultSerializer)
 from .models import OptimizationCase, OptimizationResult, ObjectiveValue, DesignValue
 from django.shortcuts import render
+from django.db.models import Prefetch
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework import generics
@@ -87,13 +89,14 @@ class OptimizationCaseViewSet(viewsets.ModelViewSet):
 
 class OptimizationResultViewSet(viewsets.ModelViewSet):
     queryset = OptimizationResult.objects.all()
-    serializer_class = OptimizationResultSerializer
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
         user = self.request.user
         target_case_id = self.request.query_params.get('case_id')
+        include_details = self.request.query_params.get(
+            'include_details') == 'true'  # include_detailsフラグ
 
         # userでフィルタリング
         queryset = OptimizationResult.objects.filter(case_id__user_id=user.id)
@@ -103,3 +106,14 @@ class OptimizationResultViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(case_id__id=target_case_id)
 
         return queryset
+
+    def get_serializer_class(self):
+        """include_details クエリパラメータによって，serializerを使い分ける
+        """
+
+        include_details = self.request.query_params.get(
+            'include_details') == 'true'
+
+        if include_details:
+            return DetailOptimizationResultSerializer  # 詳細シリアライザー
+        return OptimizationResultSerializer  # 通常シリアライザー

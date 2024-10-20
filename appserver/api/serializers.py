@@ -36,19 +36,33 @@ class OptimizationCaseSerializer(serializers.ModelSerializer):
         read_only_fields = ['user_id', 'created_at']
 
 
-class OptimizationResultSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = OptimizationResult
-        fields = '__all__'
-
-
 class ObjectiveValueSerializer(serializers.ModelSerializer):
     class Meta:
         model = ObjectiveValue
-        fields = '__all__'
+        fields = ['name', 'value']
 
 
 class DesignValueSerializer(serializers.ModelSerializer):
     class Meta:
         model = DesignValue
-        fields = '__all__'
+        fields = ['name', 'value']
+
+
+class OptimizationResultSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OptimizationResult
+        fields = ['id', 'case_id', 'attempt_number', 'created_at']
+
+
+class DetailOptimizationResultSerializer(serializers.ModelSerializer):
+    design_values = DesignValueSerializer(
+        many=True, source='designvalue_set', read_only=True)
+    objective_values = ObjectiveValueSerializer(
+        many=True, source='objectivevalue_set', read_only=True)
+
+    class Meta:
+        model = OptimizationResult
+        fields = [
+            'id', 'case_id', 'attempt_number', 'created_at',
+            'design_values', 'objective_values'
+        ]

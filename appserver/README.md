@@ -58,6 +58,12 @@ curl http://127.0.0.1:8000/api/results/?case_id=1 \
 -H "Authorization: Token ${TOKEN}" | jq
 ```
 
+```bash
+curl "http://127.0.0.1:8000/api/results/?case_id=1&include_details=true" \
+-H "Content-Type: application/json" \
+-H "Authorization: Token ${TOKEN}" | jq
+```
+
 
 # 管理
 python manage.py createsuperuser
