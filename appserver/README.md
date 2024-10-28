@@ -1,6 +1,12 @@
-# 初期化
+# 環境構築
+DBの初期化
 ```bash
 . initial_db.sh 
+```
+
+djangoサーバーを実行
+```
+python manage.py runserver
 ```
 
 # 操作
@@ -15,19 +21,15 @@ curl -X POST http://127.0.0.1:8000/api/users/ \
 }'
 ```
 
-上記のユーザーに対してトークンを発行
+上記のユーザーに対してトークンを発行し、環境変数にセットする。
 ```bash
-curl -X POST http://127.0.0.1:8000/auth/ \
+export TOKEN=$(curl -X POST http://127.0.0.1:8000/auth/ \
 -H "Content-Type: application/json" \
 -d '{
     "username": "new_user",
     "password": "password123"
-}'
-```
-
-トークンを環境変数にセット
-```bash
-export TOKEN=xxxxxxxxxxxxxxxxxxxxxxxxxxx
+}' \
+ | jq -r .token)
 ```
 
 最適化ケースを新規作成
