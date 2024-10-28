@@ -40,7 +40,7 @@ curl -X POST http://127.0.0.1:8000/api/cases/ \
 -d '{
     "remarks": "First optimization",
     "max_attempt_number": 3,
-    "initial_sampling_metod": "latin",
+    "initial_sampling_method": "latin",
     "objective_function": "Program_A"
 }'
 ```
