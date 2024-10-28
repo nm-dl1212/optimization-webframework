@@ -57,17 +57,17 @@ class OptimizationCaseViewSet(viewsets.ModelViewSet):
 
         # OptimizationResultを作成
         # 繰り返しoptimization-resultを作成
-        for i in range(optimization_case.max_attempt_number):
+        for i in range(optimization_case.max_trial_number):
 
             optimization_result = OptimizationResult.objects.create(
                 case_id=optimization_case,  # case
-                attempt_number=i
+                trial_number=i
             )
 
             x = submit_designs[i]
             y = call_model_api(x)
 
-            print("test", x, y)
+            # print("test", x, y)
 
             design_value = DesignValue.objects.create(
                 result=optimization_result,

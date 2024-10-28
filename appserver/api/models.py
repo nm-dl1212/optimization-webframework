@@ -13,11 +13,12 @@ class Task(models.Model):
 class OptimizationCase(models.Model):
     id = models.AutoField(primary_key=True)
     user_id = models.CharField(max_length=255)
-    max_attempt_number = models.IntegerField(default=10)
-    initial_sampling_method = models.CharField(
+    sampling_method = models.CharField(
         max_length=50, choices=(("latin", "latin"), ("random", "random")), default="latin"
     )
-    objective_function = models.CharField(max_length=50)
+    max_trial_number = models.IntegerField(default=10)
+    designs_dimension = models.IntegerField(max_length=12, default=2)
+    objective_dimension = models.IntegerField(max_length=4, default=1)
 
     remarks = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -30,7 +31,7 @@ class OptimizationCase(models.Model):
 class OptimizationResult(models.Model):
     id = models.AutoField(primary_key=True)
     case_id = models.ForeignKey(OptimizationCase, on_delete=models.CASCADE)
-    attempt_number = models.IntegerField()
+    trial_number = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

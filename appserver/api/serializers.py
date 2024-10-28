@@ -51,7 +51,7 @@ class DesignValueSerializer(serializers.ModelSerializer):
 class OptimizationResultSerializer(serializers.ModelSerializer):
     class Meta:
         model = OptimizationResult
-        fields = ['id', 'case_id', 'attempt_number', 'created_at']
+        fields = ['id', 'case_id', 'trial_number', 'created_at']
 
 
 class DetailOptimizationResultSerializer(serializers.ModelSerializer):
@@ -63,6 +63,6 @@ class DetailOptimizationResultSerializer(serializers.ModelSerializer):
     class Meta:
         model = OptimizationResult
         fields = [
-            'id', 'case_id', 'attempt_number', 'created_at',
+            'id', 'case_id', 'trial_number', 'created_at',
             'design_values', 'objective_values'
         ]

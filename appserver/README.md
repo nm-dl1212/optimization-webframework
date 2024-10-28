@@ -39,8 +39,8 @@ curl -X POST http://127.0.0.1:8000/api/cases/ \
 -H "Authorization: Token ${TOKEN}" \
 -d '{
     "remarks": "First optimization",
-    "max_attempt_number": 3,
-    "initial_sampling_method": "latin",
+    "max_trial_number": 3,
+    "sampling_method": "latin",
     "objective_function": "Program_A"
 }'
 ```
