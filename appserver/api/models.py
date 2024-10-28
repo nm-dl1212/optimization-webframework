@@ -17,8 +17,8 @@ class OptimizationCase(models.Model):
         max_length=50, choices=(("latin", "latin"), ("random", "random")), default="latin"
     )
     max_trial_number = models.IntegerField(default=10)
-    designs_dimension = models.IntegerField(max_length=12, default=2)
-    objective_dimension = models.IntegerField(max_length=4, default=1)
+    designs_dimension = models.IntegerField(default=2)
+    objective_dimension = models.IntegerField(default=1)
 
     remarks = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
